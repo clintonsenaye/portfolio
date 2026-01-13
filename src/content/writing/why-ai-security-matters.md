@@ -1,6 +1,6 @@
 ---
 title: "Why AI Security Is the Next Frontier"
-description: "Traditional security has clear boundaries. AI systems break those assumptions entirely—and that's what makes this field fascinating."
+description: "Traditional security has clear boundaries. AI systems break those assumptions entirely, and that's what makes this field fascinating."
 pubDate: 2025-01-13
 tags: ["AI Security", "Machine Learning", "Security"]
 draft: false
@@ -20,15 +20,15 @@ This creates a fundamental challenge for security practitioners: **how do you se
 
 The attack surface for AI systems is radically different from traditional software:
 
-- **Training data poisoning** — An attacker doesn't need to modify your code. They need to influence your training data. If your model learns from poisoned data, the vulnerability is baked into the model itself.
+- **Training data poisoning:** An attacker doesn't need to modify your code. They need to influence your training data. If your model learns from poisoned data, the vulnerability is baked into the model itself.
 
-- **Adversarial inputs** — Small, carefully crafted perturbations to input data can cause models to misclassify with high confidence. A stop sign with a few stickers becomes invisible to an autonomous vehicle.
+- **Adversarial inputs:** Small, carefully crafted perturbations to input data can cause models to misclassify with high confidence. A stop sign with a few stickers becomes invisible to an autonomous vehicle.
 
-- **Prompt injection** — When your attack surface is natural language, traditional input validation falls apart. How do you sanitize an attack vector that's literally designed to communicate intent?
+- **Prompt injection:** When your attack surface is natural language, traditional input validation falls apart. How do you sanitize an attack vector that's literally designed to communicate intent?
 
 ## What Traditional Security Teaches Us
 
-This isn't to say traditional security principles don't apply. They do—but they require translation:
+This isn't to say traditional security principles don't apply. They do, but they require translation:
 
 - **Defense in depth** still matters, but the layers are different. Training pipeline security, model versioning, inference monitoring.
 

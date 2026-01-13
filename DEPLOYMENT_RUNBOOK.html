@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Deployment Runbook</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Deployment Runbook</h1>
+</header>
+<h1 id="deployment-runbook-from-domain-to-live-website">Deployment
+Runbook: From Domain to Live Website</h1>
+<p>A comprehensive guide to deploying a static website with a custom
+domain using Cloudflare (DNS) and Netlify (hosting).</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#overview">Overview</a></li>
+<li><a href="#architecture-decisions">Architecture Decisions</a></li>
+<li><a href="#step-1-purchase-a-domain-cloudflare">Step 1: Purchase a
+Domain (Cloudflare)</a></li>
+<li><a href="#step-2-prepare-your-code-git">Step 2: Prepare Your Code
+(Git)</a></li>
+<li><a href="#step-3-push-to-github">Step 3: Push to GitHub</a></li>
+<li><a href="#step-4-deploy-to-netlify">Step 4: Deploy to
+Netlify</a></li>
+<li><a href="#step-5-connect-custom-domain">Step 5: Connect Custom
+Domain</a></li>
+<li><a href="#step-6-configure-dns-cloudflare">Step 6: Configure DNS
+(Cloudflare)</a></li>
+<li><a href="#step-7-enable-https">Step 7: Enable HTTPS</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr />
+<h2 id="overview">Overview</h2>
+<h3 id="what-were-building">What We’re Building</h3>
+<p>A deployment pipeline that: - Hosts your static website for free -
+Automatically deploys when you push code to GitHub - Uses a custom
+domain (e.g., clintonsenaye.com) - Secures traffic with HTTPS (SSL
+certificate)</p>
+<h3 id="the-stack">The Stack</h3>
+<table>
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>Service</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain Registrar</td>
+<td>Cloudflare</td>
+<td>Purchase and manage your domain name</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>Cloudflare</td>
+<td>Translate domain name to server IP</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>Netlify</td>
+<td>Serve your website files globally</td>
+</tr>
+<tr>
+<td>Version Control</td>
+<td>GitHub</td>
+<td>Store code and trigger deployments</td>
+</tr>
+<tr>
+<td>SSL Certificate</td>
+<td>Let’s Encrypt (via Netlify)</td>
+<td>Encrypt traffic (HTTPS)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="architecture-decisions">Architecture Decisions</h2>
+<h3 id="why-cloudflare-for-domain-registration">Why Cloudflare for
+Domain Registration?</h3>
+<ol type="1">
+<li><p><strong>At-cost pricing</strong> — Cloudflare charges exactly
+what the registry charges. No markup. A <code>.com</code> domain costs
+~$9-10/year.</p></li>
+<li><p><strong>Free WHOIS privacy</strong> — Your personal information
+(name, address, email) is hidden from public WHOIS lookups. Other
+registrars charge extra for this.</p></li>
+<li><p><strong>Security-focused</strong> — Cloudflare is a security
+company. They include DNSSEC, DDoS protection, and other security
+features by default.</p></li>
+<li><p><strong>No upselling</strong> — Unlike GoDaddy or Namecheap,
+Cloudflare doesn’t bombard you with add-on offers.</p></li>
+</ol>
+<p><strong>Alternatives considered:</strong> - GoDaddy: Aggressive
+upselling, higher prices - Namecheap: Good, but Cloudflare is cheaper -
+Google Domains: Sold to Squarespace, future uncertain</p>
+<h3 id="why-netlify-for-hosting">Why Netlify for Hosting?</h3>
+<ol type="1">
+<li><p><strong>Git-based deployments</strong> — Push to GitHub, site
+automatically rebuilds and deploys. No manual steps.</p></li>
+<li><p><strong>Free tier is generous</strong> — Unlimited sites, 100GB
+bandwidth/month, 100 form submissions/month.</p></li>
+<li><p><strong>Built-in form handling</strong> — Contact forms work
+without any backend code. Just add <code>data-netlify="true"</code> to
+your form.</p></li>
+<li><p><strong>Security headers via config</strong> — You can set HTTP
+security headers in a <code>netlify.toml</code> file.</p></li>
+<li><p><strong>Instant rollbacks</strong> — If a deployment breaks
+something, one-click revert to previous version.</p></li>
+<li><p><strong>Global CDN</strong> — Your site is served from servers
+worldwide, making it fast for all visitors.</p></li>
+</ol>
+<p><strong>Alternatives considered:</strong> - Vercel: Great, but more
+focused on Next.js. No built-in forms. - Cloudflare Pages: Good, but no
+built-in form handling. - GitHub Pages: Limited features, no form
+handling, no custom headers.</p>
+<h3 id="why-separate-dns-and-hosting">Why Separate DNS and Hosting?</h3>
+<p>You might wonder: “Why not use Cloudflare Pages (hosting) since we’re
+already using Cloudflare for DNS?”</p>
+<p><strong>Reasons for separation:</strong></p>
+<ol type="1">
+<li><p><strong>Avoid single point of failure</strong> — If Cloudflare
+has an outage, only your DNS is affected, not your hosting (or vice
+versa).</p></li>
+<li><p><strong>Best-of-breed</strong> — Netlify specializes in static
+site hosting and has features Cloudflare Pages lacks (forms, better
+build system).</p></li>
+<li><p><strong>Flexibility</strong> — You can switch hosting providers
+without changing your domain registrar.</p></li>
+</ol>
+<hr />
+<h2 id="step-1-purchase-a-domain-cloudflare">Step 1: Purchase a Domain
+(Cloudflare)</h2>
+<h3 id="what-is-a-domain">What is a Domain?</h3>
+<p>A domain is your website’s address (e.g.,
+<code>clintonsenaye.com</code>). Without it, people would need to
+remember an IP address like <code>104.21.45.123</code>.</p>
+<h3 id="how-to-purchase">How to Purchase</h3>
+<ol type="1">
+<li>Go to <a
+href="https://dash.cloudflare.com">dash.cloudflare.com</a></li>
+<li>Create an account (free)</li>
+<li>Click <strong>Domain Registration</strong> → <strong>Register
+Domain</strong></li>
+<li>Search for your desired domain (e.g.,
+<code>clintonsenaye.com</code>)</li>
+<li>If available, click <strong>Purchase</strong></li>
+<li>Complete payment (~$9-10/year for .com)</li>
+</ol>
+<h3 id="choosing-a-domain-name">Choosing a Domain Name</h3>
+<p>For a professional portfolio: - Use your full name:
+<code>clintonsenaye.com</code> ✓ - Stick with <code>.com</code> —
+universally recognized and trusted - Avoid hyphens, numbers, or clever
+spellings</p>
+<h3 id="what-happens-after-purchase">What Happens After Purchase</h3>
+<p>Cloudflare becomes your <strong>domain registrar</strong> — they
+manage your ownership of the domain. They also automatically become your
+<strong>DNS provider</strong> — they’ll translate your domain name to IP
+addresses.</p>
+<hr />
+<h2 id="step-2-prepare-your-code-git">Step 2: Prepare Your Code
+(Git)</h2>
+<h3 id="what-is-git">What is Git?</h3>
+<p>Git is version control software. It tracks changes to your code over
+time, lets you revert mistakes, and enables collaboration.</p>
+<h3 id="why-use-git">Why Use Git?</h3>
+<ol type="1">
+<li><strong>History</strong> — Every change is recorded. You can see
+what changed, when, and why.</li>
+<li><strong>Backup</strong> — Your code lives on GitHub, not just your
+laptop.</li>
+<li><strong>Deployment trigger</strong> — Netlify watches your GitHub
+repo and deploys when you push.</li>
+</ol>
+<h3 id="initialize-git-in-your-project">Initialize Git in Your
+Project</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /path/to/your/project</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a new Git repository</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add all files to staging</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create your first commit</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Initial commit&quot;</span></span></code></pre></div>
+<h3 id="what-these-commands-do">What These Commands Do</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git init</code></td>
+<td>Creates a <code>.git</code> folder that tracks changes</td>
+</tr>
+<tr>
+<td><code>git add .</code></td>
+<td>Stages all files for the next commit</td>
+</tr>
+<tr>
+<td><code>git commit -m "..."</code></td>
+<td>Saves a snapshot of your staged files with a message</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-3-push-to-github">Step 3: Push to GitHub</h2>
+<h3 id="what-is-github">What is GitHub?</h3>
+<p>GitHub is a cloud platform that hosts Git repositories. It’s where
+your code lives online.</p>
+<h3 id="create-a-repository-on-github">Create a Repository on
+GitHub</h3>
+<ol type="1">
+<li>Go to <a href="https://github.com">github.com</a> and sign in</li>
+<li>Click <strong>+</strong> → <strong>New repository</strong></li>
+<li>Fill in:
+<ul>
+<li><strong>Name:</strong> <code>portfolio</code> (or whatever you
+prefer)</li>
+<li><strong>Description:</strong>
+<code>Personal portfolio and blog — DevSecOps &amp; AI Security</code></li>
+<li><strong>Visibility:</strong> Public (recommended for
+portfolios)</li>
+</ul></li>
+<li><strong>Do NOT</strong> check “Add README” or “.gitignore” (you
+already have these)</li>
+<li>Click <strong>Create repository</strong></li>
+</ol>
+<h3 id="why-public">Why Public?</h3>
+<p>For a portfolio: - Recruiters can see your code quality - Shows
+transparency and confidence - Nothing sensitive in a portfolio site</p>
+<h3 id="connect-local-repo-to-github">Connect Local Repo to GitHub</h3>
+<p>After creating the repo, GitHub shows you commands. Run these:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add GitHub as a remote (replace with your URL)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/yourusername/portfolio.git</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename branch to &#39;main&#39; (modern convention)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Push your code to GitHub</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div>
+<h3 id="what-these-commands-do-1">What These Commands Do</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git remote add origin &lt;url&gt;</code></td>
+<td>Links your local repo to GitHub</td>
+</tr>
+<tr>
+<td><code>git branch -M main</code></td>
+<td>Renames your branch to <code>main</code></td>
+</tr>
+<tr>
+<td><code>git push -u origin main</code></td>
+<td>Uploads your code to GitHub</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>-u</code> flag sets up tracking, so future pushes only need
+<code>git push</code>.</p>
+<hr />
+<h2 id="step-4-deploy-to-netlify">Step 4: Deploy to Netlify</h2>
+<h3 id="create-a-netlify-account">Create a Netlify Account</h3>
+<ol type="1">
+<li>Go to <a href="https://app.netlify.com">app.netlify.com</a></li>
+<li>Sign up (you can use your GitHub account)</li>
+<li>Complete the onboarding questions</li>
+</ol>
+<h3 id="import-your-github-repository">Import Your GitHub
+Repository</h3>
+<ol type="1">
+<li>Click <strong>Add new site</strong> → <strong>Import an existing
+project</strong></li>
+<li>Choose <strong>GitHub</strong></li>
+<li>Authorize Netlify to access your GitHub (select “Only select
+repositories” and choose your portfolio repo)</li>
+<li>Select your <strong>portfolio</strong> repository</li>
+</ol>
+<h3 id="configure-build-settings">Configure Build Settings</h3>
+<p>Netlify auto-detects Astro projects. Verify these settings:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build command</td>
+<td><code>npm run build</code></td>
+</tr>
+<tr>
+<td>Publish directory</td>
+<td><code>dist</code></td>
+</tr>
+</tbody>
+</table>
+<ol start="5" type="1">
+<li>Click <strong>Deploy site</strong></li>
+</ol>
+<h3 id="what-happens-during-deployment">What Happens During
+Deployment</h3>
+<ol type="1">
+<li>Netlify clones your repository</li>
+<li>Runs <code>npm install</code> to install dependencies</li>
+<li>Runs <code>npm run build</code> to generate static files</li>
+<li>Uploads the <code>dist</code> folder to their global CDN</li>
+<li>Assigns a random subdomain (e.g.,
+<code>relaxed-swan-4f420b.netlify.app</code>)</li>
+</ol>
+<h3 id="automatic-future-deployments">Automatic Future Deployments</h3>
+<p>From now on, every time you:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Update something&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+<p>Netlify automatically: 1. Detects the push 2. Rebuilds your site 3.
+Deploys the new version 4. Keeps the old version for rollback if
+needed</p>
+<hr />
+<h2 id="step-5-connect-custom-domain">Step 5: Connect Custom Domain</h2>
+<h3 id="add-domain-to-netlify">Add Domain to Netlify</h3>
+<ol type="1">
+<li>In Netlify, go to <strong>Site settings</strong> → <strong>Domain
+management</strong></li>
+<li>Click <strong>Add custom domain</strong></li>
+<li>Enter your domain: <code>clintonsenaye.com</code></li>
+<li>Click <strong>Add domain</strong></li>
+</ol>
+<h3 id="what-netlify-does">What Netlify Does</h3>
+<p>Netlify will: 1. Add your domain as the primary domain 2.
+Automatically add <code>www.clintonsenaye.com</code> as an alias 3. Show
+“Pending DNS verification” until you configure DNS</p>
+<h3 id="why-both-root-and-www">Why Both Root and WWW?</h3>
+<ul>
+<li><strong>Root domain:</strong> <code>clintonsenaye.com</code></li>
+<li><strong>WWW subdomain:</strong>
+<code>www.clintonsenaye.com</code></li>
+</ul>
+<p>Both should work. Netlify redirects <code>www</code> to the root
+domain automatically.</p>
+<hr />
+<h2 id="step-6-configure-dns-cloudflare">Step 6: Configure DNS
+(Cloudflare)</h2>
+<h3 id="what-is-dns">What is DNS?</h3>
+<p>DNS (Domain Name System) translates human-readable domain names to IP
+addresses. When someone visits <code>clintonsenaye.com</code>, DNS tells
+their browser where to find your server.</p>
+<p>Think of it like a phone book: you look up a name (domain) to find a
+number (IP address).</p>
+<h3 id="dns-record-types">DNS Record Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>Points domain to an IPv4 address</td>
+<td><code>192.0.2.1</code></td>
+</tr>
+<tr>
+<td><strong>AAAA</strong></td>
+<td>Points domain to an IPv6 address</td>
+<td><code>2001:db8::1</code></td>
+</tr>
+<tr>
+<td><strong>CNAME</strong></td>
+<td>Points domain to another domain</td>
+<td><code>example.netlify.app</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-cname-for-netlify">Why CNAME for Netlify?</h3>
+<p>We use CNAME records because: 1. Netlify’s IP addresses can change 2.
+CNAME points to Netlify’s domain, which they keep updated 3. More
+reliable than hardcoding an IP address</p>
+<h3 id="add-dns-records-in-cloudflare">Add DNS Records in
+Cloudflare</h3>
+<ol type="1">
+<li>Go to <a
+href="https://dash.cloudflare.com">dash.cloudflare.com</a></li>
+<li>Select your domain</li>
+<li>Click <strong>DNS</strong> → <strong>Records</strong></li>
+<li>Add two CNAME records:</li>
+</ol>
+<p><strong>Record 1 (Root Domain):</strong> | Field | Value | |——-|——-|
+| Type | CNAME | | Name | <code>@</code> (represents root domain) | |
+Target | <code>your-site-name.netlify.app</code> | | Proxy status |
+<strong>DNS only</strong> (gray cloud) |</p>
+<p><strong>Record 2 (WWW Subdomain):</strong> | Field | Value |
+|——-|——-| | Type | CNAME | | Name | <code>www</code> | | Target |
+<code>your-site-name.netlify.app</code> | | Proxy status | <strong>DNS
+only</strong> (gray cloud) |</p>
+<h3 id="critical-proxy-status-must-be-dns-only">Critical: Proxy Status
+Must Be “DNS Only”</h3>
+<p>Cloudflare has two proxy modes:</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Icon</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Proxied</strong></td>
+<td>Orange cloud</td>
+<td>Traffic goes through Cloudflare’s servers</td>
+</tr>
+<tr>
+<td><strong>DNS only</strong></td>
+<td>Gray cloud</td>
+<td>Traffic goes directly to Netlify</td>
+</tr>
+</tbody>
+</table>
+<p><strong>You MUST use “DNS only” (gray cloud) because:</strong></p>
+<ol type="1">
+<li>Netlify needs to verify domain ownership to issue SSL
+certificates</li>
+<li>If proxied, Netlify sees Cloudflare’s IP, not verification
+requests</li>
+<li>SSL certificate provisioning will fail</li>
+</ol>
+<p><strong>Click the orange cloud to turn it gray before
+saving.</strong></p>
+<h3 id="dns-propagation">DNS Propagation</h3>
+<p>After saving, DNS changes propagate globally. This can take: -
+<strong>Usually:</strong> 1-5 minutes - <strong>Sometimes:</strong> Up
+to 48 hours (rare)</p>
+<p>During propagation, some users might see the old DNS, others the
+new.</p>
+<hr />
+<h2 id="step-7-enable-https">Step 7: Enable HTTPS</h2>
+<h3 id="what-is-https">What is HTTPS?</h3>
+<p>HTTPS encrypts traffic between the browser and your server. Without
+it: - Data can be intercepted (passwords, form submissions) - Browsers
+show “Not Secure” warnings - Google ranks your site lower</p>
+<h3 id="how-ssl-certificates-work">How SSL Certificates Work</h3>
+<ol type="1">
+<li>A Certificate Authority (CA) verifies you own the domain</li>
+<li>They issue a certificate (a cryptographic file)</li>
+<li>Your server uses this certificate to encrypt traffic</li>
+<li>Browsers see the padlock icon</li>
+</ol>
+<h3 id="netlify-lets-encrypt">Netlify + Let’s Encrypt</h3>
+<p>Netlify automatically: 1. Requests a free certificate from Let’s
+Encrypt 2. Verifies domain ownership via DNS 3. Installs the certificate
+4. Renews it before expiration (every 90 days)</p>
+<p>You don’t have to do anything manually.</p>
+<h3 id="verify-ssl-in-netlify">Verify SSL in Netlify</h3>
+<ol type="1">
+<li>Go to <strong>Domain management</strong> → scroll to
+<strong>HTTPS</strong></li>
+<li>Click <strong>Verify DNS configuration</strong></li>
+<li>Wait for “DNS verification was successful” ✓</li>
+<li>Certificate provisioning begins automatically</li>
+<li>Once complete, you’ll see “Your site has HTTPS enabled” ✓</li>
+</ol>
+<h3 id="provisioning-time">Provisioning Time</h3>
+<p>SSL certificate provisioning typically takes: - <strong>1-10
+minutes</strong> after DNS verification - Sometimes longer for new
+domains</p>
+<p>During this time, visiting <code>https://yourdomain.com</code> shows
+a certificate error. This is normal. Wait for Netlify to finish.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="ssl-certificate-wont-provision">SSL Certificate Won’t
+Provision</h3>
+<p><strong>Symptoms:</strong> “Waiting on DNS propagation” for more than
+10 minutes</p>
+<p><strong>Solutions:</strong> 1. Verify DNS records are correct in
+Cloudflare 2. Ensure proxy status is “DNS only” (gray cloud) 3. Click
+“Retry DNS verification” in Netlify 4. Wait longer — sometimes it takes
+up to 30 minutes</p>
+<h3 id="site-shows-not-secure-after-setup">Site Shows “Not Secure” After
+Setup</h3>
+<p><strong>Cause:</strong> Browser cached the old certificate error</p>
+<p><strong>Solution:</strong> 1. Clear browser cache 2. Try
+incognito/private window 3. Try a different browser</p>
+<h3 id="dns-changes-not-taking-effect">DNS Changes Not Taking
+Effect</h3>
+<p><strong>Cause:</strong> DNS propagation delay</p>
+<p><strong>Solutions:</strong> 1. Wait 5-10 minutes 2. Check propagation
+status at <a href="https://dnschecker.org">dnschecker.org</a> 3. Flush
+local DNS cache: - Mac: <code>sudo dscacheutil -flushcache</code> -
+Windows: <code>ipconfig /flushdns</code></p>
+<h3 id="netlify-build-fails">Netlify Build Fails</h3>
+<p><strong>Check the deploy log for errors:</strong> 1. Go to
+<strong>Deploys</strong> in Netlify 2. Click the failed deploy 3. Read
+the error message 4. Common issues: - Missing dependencies: Run
+<code>npm install</code> locally first - Build command wrong: Should be
+<code>npm run build</code> - Publish directory wrong: Should be
+<code>dist</code> for Astro</p>
+<hr />
+<h2 id="glossary">Glossary</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DNS</strong></td>
+<td>Domain Name System — translates domain names to IP addresses</td>
+</tr>
+<tr>
+<td><strong>Domain</strong></td>
+<td>Your website’s address (e.g., clintonsenaye.com)</td>
+</tr>
+<tr>
+<td><strong>Registrar</strong></td>
+<td>Company where you purchase/manage domains (e.g., Cloudflare)</td>
+</tr>
+<tr>
+<td><strong>CNAME</strong></td>
+<td>DNS record that points a domain to another domain</td>
+</tr>
+<tr>
+<td><strong>A Record</strong></td>
+<td>DNS record that points a domain to an IP address</td>
+</tr>
+<tr>
+<td><strong>SSL/TLS</strong></td>
+<td>Encryption protocols that secure web traffic</td>
+</tr>
+<tr>
+<td><strong>HTTPS</strong></td>
+<td>HTTP with SSL/TLS encryption (the padlock)</td>
+</tr>
+<tr>
+<td><strong>CDN</strong></td>
+<td>Content Delivery Network — servers worldwide that cache your
+site</td>
+</tr>
+<tr>
+<td><strong>Let’s Encrypt</strong></td>
+<td>Free Certificate Authority that issues SSL certificates</td>
+</tr>
+<tr>
+<td><strong>Propagation</strong></td>
+<td>Time for DNS changes to spread globally</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>Version control software for tracking code changes</td>
+</tr>
+<tr>
+<td><strong>Repository</strong></td>
+<td>A Git project containing your code and its history</td>
+</tr>
+<tr>
+<td><strong>Commit</strong></td>
+<td>A saved snapshot of your code at a point in time</td>
+</tr>
+<tr>
+<td><strong>Push</strong></td>
+<td>Upload local commits to a remote repository (GitHub)</td>
+</tr>
+<tr>
+<td><strong>Deploy</strong></td>
+<td>Process of making your website live on the internet</td>
+</tr>
+<tr>
+<td><strong>Static Site</strong></td>
+<td>Website with pre-built HTML files (no server-side code)</td>
+</tr>
+<tr>
+<td><strong>Build</strong></td>
+<td>Process of generating static files from source code</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-reference">Quick Reference</h2>
+<h3 id="commands-used">Commands Used</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize Git</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Initial commit&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to GitHub</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/username/repo.git</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Future updates</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Your message&quot;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+<h3 id="dns-records-summary">DNS Records Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Target</th>
+<th>Proxy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CNAME</td>
+<td>@</td>
+<td>your-site.netlify.app</td>
+<td>DNS only</td>
+</tr>
+<tr>
+<td>CNAME</td>
+<td>www</td>
+<td>your-site.netlify.app</td>
+<td>DNS only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deployment-flow">Deployment Flow</h3>
+<pre><code>Local Code → Git Commit → Push to GitHub → Netlify Detects → Build → Deploy → Live Site</code></pre>
+<hr />
+<h2 id="summary">Summary</h2>
+<p>What we accomplished:</p>
+<ol type="1">
+<li><strong>Purchased domain</strong> on Cloudflare (at-cost,
+secure)</li>
+<li><strong>Pushed code</strong> to GitHub (version control,
+backup)</li>
+<li><strong>Deployed</strong> on Netlify (auto-deploys, forms, CDN)</li>
+<li><strong>Configured DNS</strong> in Cloudflare (CNAME to
+Netlify)</li>
+<li><strong>Enabled HTTPS</strong> via Let’s Encrypt (automatic,
+free)</li>
+</ol>
+<p>Your site is now: - Live at <code>https://clintonsenaye.com</code> -
+Automatically deployed on every <code>git push</code> - Secured with
+HTTPS - Served globally via CDN - Protected with security headers</p>
+<hr />
+<p><em>Document created: January 2026</em> <em>Author: Clinton Senaye
+with Claude</em></p>
+</body>
+</html>
