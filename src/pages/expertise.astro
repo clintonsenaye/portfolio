@@ -1,0 +1,376 @@
+---
+/*
+  Expertise Page
+  Skills, technical domains, and certifications.
+*/
+
+import Page from '../layouts/Page.astro';
+
+const skillCategories = [
+  {
+    title: "Cloud & Infrastructure",
+    skills: [
+      "AWS (EC2, S3, RDS, Lambda, VPC, IAM, CloudWatch, EKS)",
+      "Terraform (Infrastructure as Code)",
+      "Kubernetes & Docker",
+      "Container Orchestration",
+      "Auto-scaling & High Availability Architecture"
+    ]
+  },
+  {
+    title: "CI/CD & Automation",
+    skills: [
+      "GitLab CI/CD Pipelines",
+      "Automated Deployment & Configuration",
+      "Security Scanning Integration (SAST, DAST)",
+      "Dependency Scanning",
+      "Container Scanning"
+    ]
+  },
+  {
+    title: "Networking & Security",
+    skills: [
+      "Network Security Architecture (VPC Design, Security Groups, NACLs)",
+      "SIEM Tools & Security Monitoring",
+      "Compliance Frameworks (ISO27001, PCI DSS, GDPR)",
+      "Incident Response",
+      "Vulnerability Assessment"
+    ]
+  },
+  {
+    title: "Monitoring & Observability",
+    skills: [
+      "Graylog",
+      "Zabbix",
+      "CloudWatch",
+      "Log Analysis & Alerting",
+      "Performance Monitoring"
+    ]
+  },
+  {
+    title: "Systems & Programming",
+    skills: [
+      "Linux Administration",
+      "Nginx",
+      "APISIX (API Gateway)",
+      "Python",
+      "Bash Scripting",
+      "Machine Learning (Isolation Forest, Anomaly Detection)"
+    ]
+  }
+];
+
+const certifications = {
+  current: [
+    { name: "AWS Certified Solutions Architect – Associate", issuer: "Amazon Web Services" },
+    { name: "AWS Certified Cloud Practitioner", issuer: "Amazon Web Services" },
+    { name: "CompTIA Security+ CE", issuer: "CompTIA" },
+    { name: "Google Cybersecurity Certificate", issuer: "Google" }
+  ],
+  inProgress: [
+    { name: "AWS Security Specialty", target: "2026" },
+    { name: "CompTIA SecAI+", target: "2026" }
+  ]
+};
+---
+
+<Page title="Expertise" description="Clinton Senaye's technical skills, domains of expertise, and professional certifications in DevSecOps and AI Security.">
+  <article class="expertise-page">
+    <div class="container">
+      <header class="page-header">
+        <h1 class="page-title">Expertise</h1>
+        <p class="page-subtitle">
+          Technical skills and certifications across DevSecOps and AI Security
+        </p>
+      </header>
+
+      <section class="skills-section">
+        <h2 class="sr-only">Technical Skills</h2>
+        <div class="skills-grid">
+          {skillCategories.map(category => (
+            <div class="skill-category">
+              <h3 class="category-title">{category.title}</h3>
+              <ul class="skill-list">
+                {category.skills.map(skill => (
+                  <li class="skill-item">{skill}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="certifications-section">
+        <h2 class="section-title">Certifications</h2>
+
+        <div class="cert-group">
+          <h3 class="cert-group-title">Current</h3>
+          <div class="cert-list">
+            {certifications.current.map(cert => (
+              <div class="cert-card">
+                <div class="cert-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+                <div class="cert-info">
+                  <h4 class="cert-name">{cert.name}</h4>
+                  <p class="cert-issuer">{cert.issuer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="cert-group">
+          <h3 class="cert-group-title">In Progress</h3>
+          <div class="cert-list">
+            {certifications.inProgress.map(cert => (
+              <div class="cert-card in-progress">
+                <div class="cert-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div class="cert-info">
+                  <h4 class="cert-name">{cert.name}</h4>
+                  <p class="cert-issuer">Target: {cert.target}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="focus-section">
+        <h2 class="section-title">Current Focus</h2>
+        <div class="focus-content">
+          <p>
+            My current work sits at the intersection of traditional DevSecOps and emerging AI security
+            challenges. I'm particularly focused on:
+          </p>
+          <ul class="focus-list">
+            <li>
+              <strong>ML Pipeline Security</strong>—Securing the full machine learning lifecycle
+              from training data to production inference.
+            </li>
+            <li>
+              <strong>Anomaly Detection</strong>—Applying machine learning to detect security
+              threats that rule-based systems miss.
+            </li>
+            <li>
+              <strong>LLM Security</strong>—Understanding and defending against prompt injection,
+              jailbreaking, and other LLM-specific attacks.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="expertise-cta">
+        <a href="/projects" class="btn btn-primary">View My Projects</a>
+        <a href="/resume" class="btn btn-secondary">Download Resume</a>
+      </div>
+    </div>
+  </article>
+</Page>
+
+<style>
+  .expertise-page {
+    padding: var(--space-12) 0 var(--space-20);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-12);
+    max-width: var(--content-width);
+  }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .page-subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+  }
+
+  /* Skills Section */
+  .skills-section {
+    margin-bottom: var(--space-16);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .skills-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .skill-category {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+  }
+
+  .category-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: var(--space-4);
+    font-family: var(--font-mono);
+  }
+
+  .skill-list {
+    list-style: none;
+  }
+
+  .skill-item {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .skill-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* Certifications Section */
+  .certifications-section {
+    margin-bottom: var(--space-16);
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-8);
+  }
+
+  .cert-group {
+    margin-bottom: var(--space-8);
+  }
+
+  .cert-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .cert-group-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-4);
+  }
+
+  .cert-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .cert-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cert-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .cert-card.in-progress {
+    opacity: 0.7;
+  }
+
+  .cert-icon {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-accent);
+  }
+
+  .cert-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .cert-name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+
+  .cert-issuer {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  /* Focus Section */
+  .focus-section {
+    max-width: var(--content-width);
+    margin-bottom: var(--space-12);
+  }
+
+  .focus-content p {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-relaxed);
+  }
+
+  .focus-list {
+    list-style: none;
+  }
+
+  .focus-list li {
+    position: relative;
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-3);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  .focus-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .focus-list strong {
+    color: var(--color-text-primary);
+  }
+
+  /* CTA */
+  .expertise-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

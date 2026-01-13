@@ -1,0 +1,271 @@
+---
+/*
+  Writing Index Page
+  Lists all blog posts/articles.
+*/
+
+import Page from '../../layouts/Page.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+---
+
+<Page title="Writing" description="Articles and thoughts on DevSecOps, AI Security, and the journey of building secure systems.">
+  <article class="writing-page">
+    <div class="container">
+      <header class="page-header">
+        <h1 class="page-title">Writing</h1>
+        <p class="page-subtitle">
+          Thoughts on security, AI, and the craft of building resilient systems
+        </p>
+      </header>
+
+      {posts.length > 0 ? (
+        <div class="posts-list">
+          {posts.map(post => (
+            <article class="post-card">
+              <a href={`/writing/${post.slug}`} class="post-link">
+                <div class="post-meta">
+                  <time datetime={post.data.pubDate.toISOString()} class="post-date">
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                  {post.data.tags.length > 0 && (
+                    <div class="post-tags">
+                      {post.data.tags.slice(0, 2).map(tag => (
+                        <span class="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <h2 class="post-title">{post.data.title}</h2>
+                <p class="post-description">{post.data.description}</p>
+                <span class="read-more">Read article →</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+          </div>
+          <h2 class="empty-title">Coming Soon</h2>
+          <p class="empty-text">
+            I'm currently working on articles about AI security, DevSecOps practices,
+            and my journey in tech. Check back soon!
+          </p>
+        </div>
+      )}
+
+      <section class="topics-section">
+        <h2 class="topics-title">Topics I Write About</h2>
+        <div class="topics-grid">
+          <div class="topic-item">
+            <h3 class="topic-name">AI Security</h3>
+            <p class="topic-description">
+              Protecting ML systems from adversarial attacks, data poisoning, and prompt injection.
+            </p>
+          </div>
+          <div class="topic-item">
+            <h3 class="topic-name">DevSecOps</h3>
+            <p class="topic-description">
+              Integrating security into CI/CD pipelines and building secure-by-default infrastructure.
+            </p>
+          </div>
+          <div class="topic-item">
+            <h3 class="topic-name">Cloud Security</h3>
+            <p class="topic-description">
+              AWS architecture, IAM best practices, and securing cloud-native applications.
+            </p>
+          </div>
+          <div class="topic-item">
+            <h3 class="topic-name">Learning Journey</h3>
+            <p class="topic-description">
+              Lessons learned transitioning from infrastructure to AI security.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </article>
+</Page>
+
+<style>
+  .writing-page {
+    padding: var(--space-12) 0 var(--space-20);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-12);
+    max-width: var(--content-width);
+  }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .page-subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+  }
+
+  /* Posts List */
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-16);
+    max-width: var(--content-width);
+  }
+
+  .post-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .post-card:hover {
+    border-color: var(--color-text-muted);
+    box-shadow: var(--shadow-md);
+  }
+
+  .post-link {
+    display: block;
+    padding: var(--space-6);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .post-date {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .post-tags {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .post-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-primary);
+  }
+
+  .post-description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-4);
+  }
+
+  .read-more {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-16);
+    background-color: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-16);
+    max-width: var(--content-width);
+  }
+
+  .empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .empty-icon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .empty-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .empty-text {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 28rem;
+    margin: 0 auto;
+  }
+
+  /* Topics Section */
+  .topics-section {
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .topics-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-6);
+  }
+
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .topics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .topic-item {
+    padding: var(--space-4);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .topic-name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    color: var(--color-accent);
+  }
+
+  .topic-description {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: var(--leading-relaxed);
+  }
+</style>

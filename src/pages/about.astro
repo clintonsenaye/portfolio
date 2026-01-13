@@ -1,0 +1,256 @@
+---
+/*
+  About Page
+  Personal story, journey, values, and beliefs.
+*/
+
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="About" description="Learn about Clinton Senaye's journey from infrastructure engineering to AI Security, and the values that drive his work.">
+  <article class="about-page">
+    <div class="container content-width">
+      <header class="page-header">
+        <h1 class="page-title">About Me</h1>
+        <p class="page-subtitle">
+          The path from infrastructure to AI Security
+        </p>
+      </header>
+
+      <section class="about-section">
+        <h2 class="section-heading">My Path to Security</h2>
+        <p>
+          I've thought like a security engineer since before I knew the term existed.
+          As a kid, I noticed how social systems worked. How trust was given and exploited,
+          how people got deceived, and I found myself analyzing the mechanisms rather than
+          just the outcomes. That same pattern carried into my technical career: when I look
+          at a system, I naturally see how it could fail, how it could be abused, where the
+          assumptions might be wrong.
+        </p>
+        <p>
+          My path through infrastructure, from banking systems at GCB, to healthcare data at
+          Lightwave, to AWS architecture at Prymo, kept pulling me toward security because
+          that's where the stakes are real. I do my best work when failure actually matters.
+          I'm not chasing the title; I'm drawn to building systems that are elegant, correct,
+          and resilient. Security is where that craftsmanship matters most.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-heading">Why AI Security</h2>
+        <p>
+          Traditional security has clear boundaries. You can audit firewall rules, inspect
+          network traffic, trace code execution. AI systems break those assumptions. A neural
+          network doesn't have logic you can step through. Its behavior emerges from training
+          data you may not fully control. The same model can behave differently based on inputs
+          in ways that aren't predictable from reading code.
+        </p>
+        <p>
+          That's a fundamentally different threat model, and it fascinates me. How do you secure
+          something you can't fully inspect? How do you detect data poisoning? How do you prevent
+          prompt injection when the attack surface is natural language? These problems don't have
+          mature solutions yet. That's where I want to be.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-heading">What I Believe</h2>
+        <div class="belief-card">
+          <blockquote class="belief-quote">
+            "Deep understanding beats tool familiarity."
+          </blockquote>
+          <p>
+            Most security practitioners know how to use tools but can't explain why they work, which
+            means they're helpless when the attack doesn't match the pattern. I'd rather understand
+            systems at the fundamental level than memorize vendor dashboards.
+          </p>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-heading">Problems I Want to Solve</h2>
+        <ul class="goals-list">
+          <li>
+            <strong>ML Pipeline Security:</strong> Training data integrity, model storage,
+            inference endpoint protection. End-to-end security for machine learning systems.
+          </li>
+          <li>
+            <strong>LLM Security:</strong> Prompt injection, jailbreaking, and the unique
+            challenges of securing systems where the attack surface is natural language.
+          </li>
+          <li>
+            <strong>Anomaly Detection:</strong> Building systems that detect when AI is being
+            manipulated or behaving abnormally.
+          </li>
+          <li>
+            <strong>Rapid Response:</strong> Developing methods to quickly respond when new
+            AI vulnerabilities emerge.
+          </li>
+        </ul>
+        <p class="goals-note">
+          The practical engineering problems organizations face deploying AI today, not
+          theoretical alignment research.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-heading">Education</h2>
+        <div class="education-list">
+          <div class="education-item">
+            <h3 class="education-degree">MSc Computing (Internet Technology & Security)</h3>
+            <p class="education-school">In Progress</p>
+            <p class="education-note">
+              Dissertation: ML-Based Anomaly Detection in DevSecOps Pipelines
+            </p>
+          </div>
+          <div class="education-item">
+            <h3 class="education-degree">BSc Computer Science</h3>
+            <p class="education-school">Ghana Institute of Management and Public Administration</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="about-cta">
+        <a href="/expertise" class="btn btn-primary">View My Expertise</a>
+        <a href="/contact" class="btn btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+  </article>
+</Page>
+
+<style>
+  .about-page {
+    padding: var(--space-12) 0 var(--space-20);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .page-subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+  }
+
+  .about-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .section-heading {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .about-section p {
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-relaxed);
+  }
+
+  .about-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Belief Card */
+  .belief-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .belief-quote {
+    font-size: var(--text-lg);
+    font-style: italic;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+  }
+
+  .belief-card p {
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+  }
+
+  /* Goals List */
+  .goals-list {
+    list-style: none;
+    margin-bottom: var(--space-4);
+  }
+
+  .goals-list li {
+    position: relative;
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  .goals-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .goals-list strong {
+    color: var(--color-text-primary);
+  }
+
+  .goals-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* Education */
+  .education-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .education-item {
+    padding: var(--space-4);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .education-degree {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+
+  .education-school {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+  }
+
+  .education-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* CTA */
+  .about-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

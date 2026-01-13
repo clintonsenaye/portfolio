@@ -1,0 +1,270 @@
+---
+/*
+  Home Page
+  The landing page - clean, professional, immediate clarity on who you are.
+*/
+
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="Home" description="Clinton Senaye - DevSecOps Engineer specializing in AI Security. Building secure, resilient systems at the intersection of security and machine learning.">
+  <section class="hero">
+    <div class="hero-container container">
+      <div class="hero-content">
+        <div class="hero-image-wrapper">
+          <img
+            src="/images/headshot.jpg"
+            alt="Clinton Senaye"
+            class="hero-image"
+            width="180"
+            height="180"
+          />
+        </div>
+        <div class="hero-text">
+          <p class="hero-label font-mono">DevSecOps Engineer</p>
+          <h1 class="hero-title">Clinton Senaye</h1>
+          <p class="hero-subtitle">
+            Building secure, resilient systems at the intersection of
+            <span class="text-accent">security</span> and <span class="text-accent">machine learning</span>.
+          </p>
+          <p class="hero-description">
+            I specialize in securing infrastructure and CI/CD pipelines, now focused on
+            the emerging challenges of AI security—protecting ML systems from adversarial
+            attacks, data poisoning, and prompt injection.
+          </p>
+          <div class="hero-actions">
+            <a href="/about" class="btn btn-primary">About Me</a>
+            <a href="/projects" class="btn btn-secondary">View Projects</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section highlights">
+    <div class="container">
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3 class="highlight-title">Security First</h3>
+          <p class="highlight-text">
+            From banking to healthcare to cloud infrastructure—I build systems where failure matters.
+          </p>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <h3 class="highlight-title">DevSecOps</h3>
+          <p class="highlight-text">
+            CI/CD security, infrastructure as code, container security, and automated compliance.
+          </p>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline>
+              <polyline points="7.5 19.79 7.5 14.6 3 12"></polyline>
+              <polyline points="21 12 16.5 14.6 16.5 19.79"></polyline>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+          <h3 class="highlight-title">AI Security</h3>
+          <p class="highlight-text">
+            Securing ML pipelines, detecting adversarial inputs, and protecting AI systems in production.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Currently pursuing AI Security</h2>
+        <p class="cta-text">
+          Completing my MSc in Computing with a focus on ML-based anomaly detection
+          for DevSecOps pipelines. Interested in AI security roles and research opportunities.
+        </p>
+        <div class="cta-actions">
+          <a href="/writing" class="btn btn-primary">Read My Writing</a>
+          <a href="/contact" class="btn btn-secondary">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  /* Hero Section */
+  .hero {
+    padding: var(--space-16) 0 var(--space-20);
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .hero-content {
+      flex-direction: row;
+      text-align: left;
+      gap: var(--space-12);
+    }
+  }
+
+  .hero-image-wrapper {
+    flex-shrink: 0;
+  }
+
+  .hero-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-border);
+  }
+
+  .hero-text {
+    max-width: 36rem;
+  }
+
+  .hero-label {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: var(--text-5xl);
+    }
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-relaxed);
+  }
+
+  .hero-description {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    line-height: var(--leading-relaxed);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  /* Highlights Section */
+  .highlights {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .highlights-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .highlight-card {
+    padding: var(--space-6);
+    text-align: center;
+  }
+
+  .highlight-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-accent);
+  }
+
+  .highlight-icon svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .highlight-title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .highlight-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: var(--space-20) 0;
+  }
+
+  .cta-content {
+    max-width: 36rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .cta-text {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+    line-height: var(--leading-relaxed);
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>
